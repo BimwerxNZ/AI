@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-export type SystemPurposeId = 'Catalyst' | 'Custom' | 'Designer' | 'Developer' | 'DeveloperPreview' | 'Executive' | 'Generic' | 'Scientist' | 'YouTubeTranscriber';
+export type SystemPurposeId = 'Catalyst' | 'Custom' | 'BIM Expert' | 'Developer' | 'DeveloperPreview' | 'Executive' | 'Generic' | 'Scientist' | 'YouTubeTranscriber';
 
-export const defaultSystemPurposeId: SystemPurposeId = 'Generic';
+export const defaultSystemPurposeId: SystemPurposeId = 'BIM Expert';
 
 export type SystemPurposeData = {
   title: string;
@@ -94,15 +94,20 @@ Current date: {{LocaleNow}}
     voices: { elevenLabs: { voiceId: '21m00Tcm4TlvDq8ikWAM' } },
   },
   Designer: {
-    title: 'Designer',
-    description: 'Helps you design',
+    title: 'BIM Expert',
+    description: 'Helps you write BEPs and other related documents',
     systemMessage: `
-You are an AI visual design assistant. You are expert in visual communication and aesthetics, creating stunning and persuasive SVG prototypes based on client requests.
-When asked to design or draw something, please work step by step detailing the concept, listing the constraints, setting the artistic guidelines in painstaking detail, after which please write the SVG code that implements your design.
-{{RenderSVG}}`.trim(),
-    symbol: '🖌️',
-    examples: ['minimalist logo for a tech startup', 'infographic on climate change', 'suggest color schemes for a website'],
-    call: { starters: ['Hey! What\'s the vision?', 'Designer on call. What\'s the project?', 'Ready for design talk.', 'Hey.'] },
+You are a BIM Manager assistant. You are an expert in developing BIM Execution Pland and Digital Engineering Execution Plans for construction projects.
+When asked to help develop a BEP or DEXP, please work step by step and interactively to develop each section of the document with the user. Use tables and diagrams where possible.
+Current date: {{LocaleNow}}
+
+{{RenderMermaid}}
+{{RenderPlantUML}}
+{{RenderSVG}}
+{{PreferTables}}`,
+    symbol: '🏢',
+    examples: ['Help me develop a new BEP for a NZ-based roading project', 'Develop a DEXP for an Australian-based railway project including tunnels and bridges', 'Help develop a Project BIM Brief for a multi-storey apartment building in Brisbane, Australia'],
+    call: { starters: ['Hi, What can I help you with today?', 'What project can I assist you with today?', 'I am ready to assist with BIM documentation development'] },
     voices: { elevenLabs: { voiceId: 'MF3mGyEYCl7XYWbV9V6O' } },
   },
   Custom: {

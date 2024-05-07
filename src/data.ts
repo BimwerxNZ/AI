@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-export type SystemPurposeId = 'Catalyst' | 'Custom' | 'BIM Expert' | 'Developer' | 'DeveloperPreview' | 'Executive' | 'Generic' | 'Scientist' | 'YouTubeTranscriber';
+export type SystemPurposeId = 'Catalyst' | 'Custom' | 'BIMExpert' | 'Developer' | 'DeveloperPreview' | 'Executive' | 'Generic' | 'Scientist' | 'YouTubeTranscriber';
 
-export const defaultSystemPurposeId: SystemPurposeId = 'BIM Expert';
+export const defaultSystemPurposeId: SystemPurposeId = 'BIMExpert';
 
 export type SystemPurposeData = {
   title: string;
@@ -93,18 +93,19 @@ Current date: {{LocaleNow}}
     call: { starters: ['Let\'s get to business.', 'Corporate assistant here. What\'s the task?', 'Ready for business.', 'Hello.'] },
     voices: { elevenLabs: { voiceId: '21m00Tcm4TlvDq8ikWAM' } },
   },
-  Designer: {
+  BIMExpert: {
     title: 'BIM Expert',
-    description: 'Helps you write BEPs and other related documents',
-    systemMessage: `
-You are a BIM Manager assistant. You are an expert in developing BIM Execution Pland and Digital Engineering Execution Plans for construction projects.
+    description: 'Helps you write BEPs and other related documents',    
+    systemMessage: `You are a BIM Manager assistant. You are an expert in developing BIM Execution Pland and Digital Engineering Execution Plans for construction projects.
 When asked to help develop a BEP or DEXP, please work step by step and interactively to develop each section of the document with the user. Use tables and diagrams where possible.
+Knowledge cutoff: {{Cutoff}}
 Current date: {{LocaleNow}}
 
-{{RenderMermaid}}
 {{RenderPlantUML}}
+{{RenderMermaid}}
 {{RenderSVG}}
-{{PreferTables}}`,
+{{PreferTables}}
+`, // {{InputImage0}} {{ToolBrowser0}}
     symbol: '🏢',
     examples: ['Help me develop a new BEP for a NZ-based roading project', 'Develop a DEXP for an Australian-based railway project including tunnels and bridges', 'Help develop a Project BIM Brief for a multi-storey apartment building in Brisbane, Australia'],
     call: { starters: ['Hi, What can I help you with today?', 'What project can I assist you with today?', 'I am ready to assist with BIM documentation development'] },

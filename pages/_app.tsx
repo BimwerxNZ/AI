@@ -22,10 +22,12 @@ import { ProviderTheming } from '~/common/providers/ProviderTheming';
 import { hasGoogleAnalytics, OptionalGoogleAnalytics } from '~/common/components/GoogleAnalytics';
 import { isVercelFromFrontend } from '~/common/util/pwaUtils';
 
+import { SignalRConnectionProvider } from '../src/SignalRContext';
 
 const MyApp = ({ Component, emotionCache, pageProps }: MyAppProps) =>
+<SignalRConnectionProvider> {/* Wrap your app with the SignalR provider */}
   <>
-
+    
     <Head>
       <title>{Brand.Title.Common}</title>
       <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no' />
@@ -45,12 +47,13 @@ const MyApp = ({ Component, emotionCache, pageProps }: MyAppProps) =>
         </ProviderTRPCQuerySettings>
       </ProviderSingleTab>
     </ProviderTheming>
-
+    
     {isVercelFromFrontend && <VercelAnalytics debug={false} />}
     {isVercelFromFrontend && <VercelSpeedInsights debug={false} sampleRate={1 / 2} />}
     {hasGoogleAnalytics && <OptionalGoogleAnalytics />}
 
-  </>;
+  </>
+  </SignalRConnectionProvider>;
 
 // enables the React Query API invocation
 export default apiQuery.withTRPC(MyApp);

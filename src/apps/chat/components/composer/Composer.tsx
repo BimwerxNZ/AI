@@ -70,6 +70,7 @@ import { TokenBadgeMemo } from './TokenBadge';
 import { TokenProgressbarMemo } from './TokenProgressbar';
 import { useComposerStartupText } from './store-composer';
 
+import { useSignalRConnection } from '../../../../SignalRContext';
 
 const zIndexComposerOverlayDrop = 10;
 const zIndexComposerOverlayMic = 20;
@@ -156,6 +157,29 @@ export function Composer(props: {
   const isDesktop = !props.isMobile;
   const chatLLMId = props.chatLLM?.id || null;
 
+
+  const signalRContext = useSignalRConnection();
+
+  React.useEffect(() => {
+    if (signalRContext?.connection) {
+      signalRContext.connection.on("ReceiveMessage", (user, message) => {
+        //console.log(`Message from ${user}: ${message}`);
+        // handleSendClicked(receivedMessage); // If this function sends the message
+        if (message == 'Clear') {
+          setComposeText('');
+        } else {
+          setComposeText(message); // If you want to set it as textarea content
+        }        
+        //setComposeText('');
+      });
+    }
+    
+    // Clean up
+    return () => {
+      signalRContext?.connection?.off("ReceiveMessage");
+    };
+  }, [signalRContext?.connection]);
+
   // attachments derived state
 
   const llmAttachments = useLLMAttachments(_attachments, chatLLMId);
@@ -216,10 +240,23 @@ export function Composer(props: {
 
     // send the message
     const enqueued = onAction(conversationId, _chatModeId, multiPartMessage, metadata);
+    const text = (composeText || '').trim();
+    
     if (enqueued) {
       clearAttachments();
       handleReplyToCleared();
       setComposeText('');
+      
+      if (signalRContext?.connection) {
+        try {
+          signalRContext.connection.invoke("SendMessage", "User", text);
+          // Additional logic after sending the message, if needed
+          setComposeText('');
+        } catch (error) {
+          console.error("Error sending message via SignalR: ", error);
+        }
+      }
+      
     }
 
     return enqueued;

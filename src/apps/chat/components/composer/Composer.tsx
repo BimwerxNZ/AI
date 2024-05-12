@@ -240,6 +240,8 @@ export function Composer(props: {
 
     // send the message
     const enqueued = onAction(conversationId, _chatModeId, multiPartMessage, metadata);
+    const text = (composeText || '').trim();
+    
     if (enqueued) {
       clearAttachments();
       handleReplyToCleared();
